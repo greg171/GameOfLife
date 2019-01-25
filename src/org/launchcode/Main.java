@@ -3,6 +3,6 @@ package org.launchcode;
 public class Main {
 
     public static void main(String[] args) {
-	System.out.println("Initial set up commit and push");
+	game g = new game(80);
     }
 }
