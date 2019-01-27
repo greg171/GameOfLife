@@ -9,17 +9,20 @@ public class game {
 
     game(int gridSize) {
         int count = 0;
+        //Initialise size of the grid
         grid = new String[gridSize][gridSize];
         neighborsCounts = new int[grid.length][grid[0].length];
         this.grid = new String[gridSize][gridSize];
 
         for (int row = 0; row < this.grid.length; row++) {
             for (int cell = 0; cell < this.grid[row].length; cell++) {
-                this.grid[row][cell] = (Math.random() > .5) ? "x|" : " |";
+                this.grid[row][cell] = (Math.random() > .9) ? "x|" : " |";
                 System.out.print(this.grid[row][cell]);
+
             }
             System.out.println();
         }
+        System.out.println();
     }
 
     void checkNeighbors() {
@@ -62,10 +65,10 @@ public class game {
                     this.grid[row][cell] = " |";
                     //No interactions scenario
                 }else if(this.grid[row][cell] == " |" && this.neighborsCounts[row][cell] == 0){
-                    break;
+                    this.grid[row][cell] = " |";
                     //Survival scenario
                 }else if(this.grid[row][cell] == "x|" && this.neighborsCounts[row][cell] == 2 || this.grid[row][cell] == "x|" && this.neighborsCounts[row][cell] == 3){
-                    break;
+                    this.grid[row][cell] = "x|";
                 }
                 System.out.print(this.grid[row][cell]);
             }
