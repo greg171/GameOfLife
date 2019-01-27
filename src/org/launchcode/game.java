@@ -8,12 +8,14 @@ public class game {
     private static final int[][] directions = {{0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}, {-1, 0}, {-1, 1}};
 
     game(int gridSize) {
-        grid = new String [gridSize][gridSize];
+        int count = 0;
+        grid = new String[gridSize][gridSize];
         neighborsCounts = new int[grid.length][grid[0].length];
         this.grid = new String[gridSize][gridSize];
+
         for (int row = 0; row < this.grid.length; row++) {
             for (int cell = 0; cell < this.grid[row].length; cell++) {
-                this.grid[row][cell] = (Math.random() > .9) ? "x|" : " |";
+                this.grid[row][cell] = (Math.random() > .5) ? "x|" : " |";
                 System.out.print(this.grid[row][cell]);
             }
             System.out.println();
@@ -29,7 +31,7 @@ public class game {
                     int x = col + direction[1];
                     if (x < 0) {
                         x += this.grid.length;
-                    } else if  (x >= grid.length) {
+                    } else if (x >= grid.length) {
                         x -= grid.length;
                     }
                     if (y < 0) {
@@ -40,31 +42,36 @@ public class game {
                     if (this.grid[x][y] == "x|") count++;
                 }
                 neighborsCounts[row][col] = count;
-                count= 0;
+                count = 0;
             }
         }
     }
+
     void showGrid() {
-        int f = 0;
-        while (f !=3){
-                for (int row = 0; row < this.grid.length; row++) {
-                    for (int cell = 0; cell < this.grid[row].length; cell++) {
-                        if (this.grid[row][cell] == " |" && this.neighborsCounts[row][cell] == 3) {
-                            this.grid[row][cell] = "x|";
-                            f++;
-                        } else if (this.grid[row][cell] == "x|" && this.neighborsCounts[row][cell] > 3) {
-                            this.grid[row][cell] = " |";
-                            f++;
-                        } else if (this.grid[row][cell] == "x|" && this.neighborsCounts[row][cell] < 2) {
-                            this.grid[row][cell] = " |";
-                            f++;
-                        }
-                        System.out.print(this.grid[row][cell]);
-                    }
-                    System.out.println();
+
+        for (int row = 0; row < this.grid.length; row++) {
+            for (int cell = 0; cell < this.grid[row].length; cell++) {
+                //Creation of life scenario
+                if (this.grid[row][cell] == " |" && this.neighborsCounts[row][cell] == 3 ) {
+                    this.grid[row][cell] = "x|";
+                    //Overcrowding scenario
+                } else if (this.grid[row][cell] == "x|" && this.neighborsCounts[row][cell] > 3) {
+                    this.grid[row][cell] = " |";
+                    // Underpopulation scenario
+                } else if (this.grid[row][cell] == "x|" && this.neighborsCounts[row][cell] < 2) {
+                    this.grid[row][cell] = " |";
+                    //No interactions scenario
+                }else if(this.grid[row][cell] == " |" && this.neighborsCounts[row][cell] == 0){
+                    break;
+                    //Survival scenario
+                }else if(this.grid[row][cell] == "x|" && this.neighborsCounts[row][cell] == 2 || this.grid[row][cell] == "x|" && this.neighborsCounts[row][cell] == 3){
+                    break;
                 }
+                System.out.print(this.grid[row][cell]);
             }
-            this.checkNeighbors();
+            System.out.println();
         }
+        this.checkNeighbors();
     }
+}
 
